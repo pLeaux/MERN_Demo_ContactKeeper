@@ -3,8 +3,8 @@
 node_modules/
 
 # Originally, this is enabled, but: Heroku misses it
-/config/production.json
-/config/default.json
+# /config/production.json
+# /config/default.json
 
 client/build
 
