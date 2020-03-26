@@ -1,4 +1,0 @@
-{
-  "mongoDB_ConnectURL": "mongodb://localhost:27017/contactkeeper", 
-  "jwt_secret": "some-secret-string-123"
-}
