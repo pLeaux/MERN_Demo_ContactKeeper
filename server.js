@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 // app.get('/', (req, res) => res.send('Hello'));
 
 // connect database 
-db.connectDB();
+db.connectDB() ;
 
 // routing
 app.use('/api/users', require('./routes/users'));
