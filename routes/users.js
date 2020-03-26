@@ -29,13 +29,14 @@ router.post(
   [ // checks of input data, just for example + these checks are definition and not yet execution
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Email is not valid').isEmail(),
-    check('password', 'Password is required').not().isEmpty()
+    check('password', 'Password is required').not().isEmpty(),
+    check('password','Bad password, min.length is 5.').isLength({min: 5})
   ],   
   async (req, res) => { 
     console.log('>>>>>>>>>>> POST api/users, req.body: \n\n', req.body); 
-    const errors = validationResult(req); 
-    if (! errors.isEmpty()) {
-      res.status(400).json({ "errors": errors.array()} );
+    const vResult = validationResult(req);  
+    if (! vResult.isEmpty() && vResult.errors) { 
+      res.status(400).json({ "msg": vResult.errors.map(err => err.msg).join('; ')}); 
       return;
     };  
     const { name, email, password } = req.body; 

@@ -22,13 +22,11 @@ const mongoose = require('mongoose');
  */ 
 router.get('/', checkReqAuth, async (req, res) => { 
     try {
-        if (! (req.user && req.user.id) ) {
-            console.log('GET api/auth, req.user.id is null; req.user/req: \n', req.user ? req.user : req);
+        if (! (req.user && req.user.id) ) { 
             res.status(500).json({"msg": "Server error."});
             return; 
         };
-        let userInDb = await User.findById(req.user.id).select('-password');
-        // console.log('GET api/auth, userInDb, userInDb: ', userInDb)
+        let userInDb = await User.findById(req.user.id).select('-password'); 
         if (! userInDb) {
             res.status(400).json({"msg": "User not found."});
             return; 
@@ -50,16 +48,15 @@ router.post(
     // check data, sent in request 
     [
         check('email','No email in request.').not().isEmpty(), 
-        check('email','Bad email format.').isEmail(), 
-        check('password','Unvalid password (min.length=5).').isLength({min: 5})
+        check('email','Bad email format.').isEmail() 
     ],  
     async (req, res) => { 
         try {
             console.log('>>>>>>>>>>> POST api/auth'); 
-            // check data, sent in request
-            const errors = validationResult(req); 
-            if (! errors.isEmpty()) {
-              res.status(400).json({ "errors": errors.array()} );
+            // check data, sent in request 
+            const vResult = validationResult(req);  
+            if (! vResult.isEmpty() && vResult.errors) { 
+              res.status(400).json({ "msg": vResult.errors.map(err => err.msg).join('; ')}); 
               return;
             };  
             // check password 
@@ -79,7 +76,7 @@ router.post(
             jwToken = jwt.sign(jwt_data, jwt_secret, {expiresIn: 36000 /*sec*/ }); // returns base64 string, that can be unpacked with "www.jwt.io" or jwt.verify()  
             res.status(201).json({ "token": jwToken }); 
         } catch (error) {
-            console.log('POST api/auth error: \n', error.message);
+            console.log('POST api/auth error:', error);
             res.status(500).json({ "msg": "Server error" });
         } 
     }

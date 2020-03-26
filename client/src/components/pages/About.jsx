@@ -3,7 +3,7 @@ import React from 'react'
 const About = () => {
 
   const course_link = 'https://www.udemy.com/course/modern-react-front-to-back';
-  const github_link = 'https://www.github.com/pleaux';
+  const github_link = 'https://github.com/pLeaux/MERN_Demo_ContactKeeper';
 
   return (
     <div> 

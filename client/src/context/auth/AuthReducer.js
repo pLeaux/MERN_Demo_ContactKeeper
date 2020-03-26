@@ -40,9 +40,9 @@ const AuthReducer = (state, action) => {
       };
       return(newState);
     }
-    case actionTypes.REGISTER_FAIL:
+    case actionTypes.REGISTER_ERROR:
     case actionTypes.AUTH_ERROR:
-    case actionTypes.LOGIN_FAIL:
+    case actionTypes.LOGIN_ERROR:
     case actionTypes.LOGOUT: {
       localStorage.removeItem('token');
       newState = {

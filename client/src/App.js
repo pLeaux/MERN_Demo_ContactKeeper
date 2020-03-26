@@ -17,24 +17,24 @@ import PrivateRoute from './components/auth/PrivateRoute';
 function App() {
  
   return (
-    <AuthState>  
-      <ContactState> 
-        <AlertState> 
-          <Router> 
-            <Navbar/>  
-            <Alerts/> 
-            <div className='container'> 
-              <Switch> 
-                <PrivateRoute exact path='/' component={Home}/>
-                <Route exact path='/about' component={About}/>
-                <Route exact path='/login' component={Login}/> 
-                <Route exact path='/register' component={Register}/>   
-              </Switch> 
-            </div>
-          </Router> 
-          </AlertState>
-      </ContactState>  
-    </AuthState>
+    <AlertState> 
+      <AuthState>  
+        <ContactState>  
+            <Router> 
+              <Navbar/>  
+              <Alerts/> 
+              <div className='container'> 
+                <Switch> 
+                  <PrivateRoute exact path='/' component={Home}/>
+                  <Route exact path='/about' component={About}/>
+                  <Route exact path='/login' component={Login}/> 
+                  <Route exact path='/register' component={Register}/>   
+                </Switch> 
+              </div>
+            </Router>  
+        </ContactState>  
+      </AuthState>
+    </AlertState> 
   );
 }
 

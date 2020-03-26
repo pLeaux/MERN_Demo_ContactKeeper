@@ -1,9 +1,10 @@
-import React , { useReducer, useEffect } from 'react';  
+import React , { useReducer, useEffect, useContext } from 'react';  
 import axios from 'axios';
 import { actionTypes } from '../types';
 import AuthContext from './AuthContext';
 import AuthReducer from './AuthReducer';
 import { setAuthToken } from './AuthUtils';
+import AlertContext from '../alert/AlertContext';
 
 
 const AuthState = props => {
@@ -17,6 +18,8 @@ const AuthState = props => {
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);  
 
+  const alertContext = useContext(AlertContext);
+
   useEffect(() => {
     console.log(`AuthState.useEffect, state.isAuthenticated:${state.isAuthenticated}, state.token:${state.token}`);
     // eslint-disable-next-line
@@ -24,18 +27,21 @@ const AuthState = props => {
 
   const registerUser = async (newUser) => {
     try {
-        setLoading();
-        var res = await axios.post('/api/users', JSON.stringify(newUser), { headers: { "content-type": "application/json"} });  
+      setLoading();
+      var res = await axios.post('/api/users', JSON.stringify(newUser), { headers: { "content-type": "application/json"} });
+      console.log('registerUser, response: ', res);  
       dispatch({
         type: actionTypes.REGISTER_USER, 
         payload: res.data
       }) ; 
       loadUser();     
     } catch (error) {
+      let errMsg = error.response ? error.response.data.msg: error.message;  
       dispatch({
         type: actionTypes.REGISTER_ERROR, 
-        payload: error.message
-      }) 
+        payload: errMsg
+      }); 
+      alertContext.setAlert(errMsg, 'danger');
     }
   } 
 
@@ -54,11 +60,13 @@ const AuthState = props => {
       loadUser();
       
     } catch (error) {
-      console.log('AuthState.login error:\n', error.message);
+      console.log('Login error : ', error);
+      let errMsg = error.response ? error.response.data.msg: error.message;  
       dispatch({
         type: actionTypes.LOGIN_ERROR, 
-        payload: error.message
+        payload: errMsg
       }) 
+      alertContext.setAlert(errMsg, 'danger');
     }
   }
 
